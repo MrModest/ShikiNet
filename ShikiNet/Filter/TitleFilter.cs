@@ -81,7 +81,7 @@ namespace ShikiNet.Filter
             if (!MyLists.IsEmpty)  { query.Append(MyLists); }
             if (!GenreIds.IsEmpty) { query.Append(GenreIds); }
 
-            if (String.IsNullOrWhiteSpace(SearchString)) { query.Append(HttpUtility.UrlEncode(SearchString, Encoding.UTF8)); }
+            if (String.IsNullOrWhiteSpace(SearchString)) { query.Append("&search=").Append(HttpUtility.UrlEncode(SearchString, Encoding.UTF8)); }
         }
     }
 }
