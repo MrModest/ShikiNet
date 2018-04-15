@@ -35,7 +35,7 @@ namespace ShikiNet.Filter
 
         public override string ToString()
         {
-            return Bu;
+            return BuildQuery();
         }
     }
 }
