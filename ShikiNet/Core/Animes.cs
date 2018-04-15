@@ -9,6 +9,8 @@ namespace ShikiNet.Core
 {
     public static class Animes
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public static async Task<AnimeFull> GetById(int id)
         {
             return await Api.GetAsync<AnimeFull>($"/animes/{id}");
@@ -25,6 +27,7 @@ namespace ShikiNet.Core
         {
             var aFilter = new AnimeFilter();
             filter(aFilter);
+            logger.Info($"GetByFilter(Action<AnimeFilter>) | genered_url: [{aFilter.BuildQuery()}]");
             return await Api.GetAsync<IEnumerable<Anime>>($"/animes{aFilter.BuildQuery()}");
         }
 
