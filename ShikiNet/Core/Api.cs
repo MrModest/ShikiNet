@@ -13,7 +13,7 @@ using ShikiNet.Static;
 
 namespace ShikiNet.Core
 {
-    public sealed class Api
+    public static class Api
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
