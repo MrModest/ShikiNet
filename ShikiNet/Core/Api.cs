@@ -9,10 +9,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using ShikiNet.Entity;
+using ShikiNet.Static;
 
 namespace ShikiNet.Core
 {
-    public class Api
+    public sealed class Api
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -53,11 +54,11 @@ namespace ShikiNet.Core
 
         static Api()
         {
-            SITE_DOMAIN = "https://shikimori.org";
-            API_DOMAIN = SITE_DOMAIN + "/api";
+            SITE_DOMAIN = StaticValue.SITE_DOMAIN;
+            API_DOMAIN = StaticValue.API_DOMAIN;
 
-            AppName = "ShikiNet (from api)";
-            DevName = "MrModest (from api)";
+            AppName = StaticValue.DEFAULT_APP_NAME;
+            DevName = StaticValue.DEFAULT_DEV_NAME;
 
             jsonSerializerSettings = new JsonSerializerSettings //for (de-)serialization get-autoproperty
             {
