@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using ShikiNet.Entity;
 using ShikiNet.Static;
+using ShikiNet.Util;
 
 namespace ShikiNet.Core
 {
@@ -31,6 +32,7 @@ namespace ShikiNet.Core
         public static string DevName { get; set; }
 
         public static OAuth2Token OAuth2Token { get; private set; }
+        public static bool AutoRefreshToken { get; set; }
         public static bool IsAuthorized
         {
             get
@@ -59,6 +61,8 @@ namespace ShikiNet.Core
             AppName = StaticValue.DEFAULT_APP_NAME;
             DevName = StaticValue.DEFAULT_DEV_NAME;
 
+            AutoRefreshToken = false;
+
             jsonSerializerSettings = new JsonSerializerSettings //for (de-)serialization get-autoproperty
             {
                 ContractResolver = new PrivateSetterContractResolver()
@@ -80,30 +84,36 @@ namespace ShikiNet.Core
             }
         }
 
-        //ToDo: set laconic name for arg
-        private static async Task<string> RequestAsync(HttpRequestMessage httpRequestMessage)
+        private static async Task<string> RequestAsync(HttpRequestMessage request)
         {
-            var shortUrl = httpRequestMessage.RequestUri.OriginalString;
-            httpRequestMessage.RequestUri = new Uri(GetFullUrl(shortUrl)); //get FULL url
+            var shortUrl = request.RequestUri.OriginalString; //get FULL url
+            request.RequestUri = new Uri(GetFullUrl(shortUrl)); 
 
-            httpRequestMessage.Headers.Add("User-Agent", AppName + "@" + DevName);
+            logger.InfoStartRequest(request); //logging
+
+            request.Headers.Add("User-Agent", AppName + "@" + DevName);
             if (IsAuthorized)
             {
-                httpRequestMessage.Headers.Add("Authorization", "Bearer " + OAuth2Token.AccessToken);
+                if (AutoRefreshToken && IsTokenExpired)
+                {
+                    await RefreshTokenAsync(OAuth2Token.AccessToken);
+                }
+                request.Headers.Add("Authorization", "Bearer " + OAuth2Token.AccessToken);
             }
 
             HttpResponseMessage response;
             using(client = new HttpClient())
             {
-                response = await client.SendAsync(httpRequestMessage);
+                response = await client.SendAsync(request);
             }
 
             if (response.IsSuccessStatusCode)
             {
+                logger.InfoDoneRequest(request); //logging
                 return await response.Content.ReadAsStringAsync();
             }
 
-            logger.Warn($"Request | url: [{httpRequestMessage.RequestUri.OriginalString}] | code: [{response.StatusCode}] | message: [{response.ReasonPhrase}]");
+            logger.WarnNotOkResponse(request, response); //logging
 
             return null;
         }
@@ -116,7 +126,7 @@ namespace ShikiNet.Core
             }
             catch (JsonSerializationException ex)
             {
-                logger.Warn(ex, $"{method}<{typeof(T).FullName}> | url: [{url}] | args: [{args}] | response: [{response}] | exMessage: [{ex.Message}]");
+                logger.WarnDeserializationFail(ex, response, $"{method}<{typeof(T).FullName}>", url, args); //logging
             }
 
             return default(T);
@@ -169,6 +179,8 @@ namespace ShikiNet.Core
         {
             if (ClientId == null || ClientSecret == null || authorizationCode == null || RedirectUrl == null) { return null; }
 
+            logger.InfoExecutionStart("Requesting token"); //logging
+
             JObject jObject = JObject.FromObject(new
             {
                 grant_type    = "authorization_code",
@@ -180,12 +192,16 @@ namespace ShikiNet.Core
 
             OAuth2Token = await PostAsync<OAuth2Token>("/oauth/token", jObject.ToString(), RequestVersion.SITE);
 
+            logger.InfoOrWarnExecutionStatus("Requesting token", IsAuthorized); //logging
+
             return OAuth2Token;
         }
 
         public static async Task<OAuth2Token> RefreshTokenAsync(string refreshToken)
         {
             if(ClientId == null || ClientSecret == null || refreshToken == null) { return null; }
+
+            logger.InfoExecutionStart("Refreshing token"); //logging
 
             JObject jObject = JObject.FromObject(new
             {
@@ -196,6 +212,8 @@ namespace ShikiNet.Core
             });
 
             OAuth2Token = await PostAsync<OAuth2Token>("/oauth/token", jObject.ToString(), RequestVersion.SITE);
+
+            logger.InfoOrWarnExecutionStatus("Refreshing token", !IsTokenExpired); //logging
 
             return OAuth2Token;
         }

@@ -15,7 +15,7 @@ namespace ShikiNet.Entity
         public string TokenType    { get; }
 
         [JsonProperty(PropertyName = "expires_in")]
-        public int    ExpiresIn    { get; }
+        public int    ExpiresIn    { get; } //Seconds
 
         [JsonProperty(PropertyName = "refresh_token")]
         public string RefreshToken { get; }
