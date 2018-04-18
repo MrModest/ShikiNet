@@ -30,13 +30,12 @@ namespace ShikiNet.Core
         public static string AppName { get; set; }
         public static string DevName { get; set; }
 
-        private static string AccessToken { get; set; }
         public static OAuth2Token OAuth2Token { get; private set; }
         public static bool IsAuthorized
         {
             get
             {
-                return AccessToken != null;
+                return OAuth2Token?.AccessToken != null;
             }
         }
         public static bool IsTokenExpired
@@ -90,7 +89,7 @@ namespace ShikiNet.Core
             httpRequestMessage.Headers.Add("User-Agent", AppName + "@" + DevName);
             if (IsAuthorized)
             {
-                httpRequestMessage.Headers.Add("Authorization", "Bearer " + AccessToken);
+                httpRequestMessage.Headers.Add("Authorization", "Bearer " + OAuth2Token.AccessToken);
             }
 
             HttpResponseMessage response;
@@ -109,21 +108,26 @@ namespace ShikiNet.Core
             return null;
         }
 
-        internal static async Task<T> GetAsync<T>(string url, RequestVersion requestVersion = RequestVersion.API_V1)
+        private static T HandleResponse<T>(string response, string method = "<unknown>", string url = "<unknown>", string args = null)
         {
-
-            var response = await RequestAsync(new HttpRequestMessage(HttpMethod.Get, url));
-
             try
             {
                 return JsonConvert.DeserializeObject<T>(response, jsonSerializerSettings);
             }
             catch (JsonSerializationException ex)
             {
-                logger.Warn(ex, $"GetAsync<{typeof(T).FullName}> | url: [{url}] | exMessage: [{ex.Message}]");
+                logger.Warn(ex, $"{method}<{typeof(T).FullName}> | url: [{url}] | args: [{args}] | response: [{response}] | exMessage: [{ex.Message}]");
             }
 
             return default(T);
+        }
+
+        internal static async Task<T> GetAsync<T>(string url, RequestVersion requestVersion = RequestVersion.API_V1)
+        {
+
+            var response = await RequestAsync(new HttpRequestMessage(HttpMethod.Get, url));
+
+            return HandleResponse<T>(response, "GetAsync", url);
         }
 
         internal static async Task<T> PostAsync<T>(string url, string args = null, RequestVersion requestVersion = RequestVersion.API_V1)
@@ -137,16 +141,7 @@ namespace ShikiNet.Core
 
             var response = await RequestAsync(httpRequestMessage);
 
-            try
-            {
-                return JsonConvert.DeserializeObject<T>(response, jsonSerializerSettings);
-            }
-            catch (JsonSerializationException ex)
-            {
-                logger.Warn(ex, $"PostAsync<{typeof(T).FullName}> | url: [{url}] | args: [{args}] | exMessage: [{ex.Message}]");
-            }
-
-            return default(T);
+            return HandleResponse<T>(response, "PostAsync", url, args);
         }
 
         internal static async Task<T> PutAsync<T>(string url, string args = null, RequestVersion requestVersion = RequestVersion.API_V1)
@@ -160,32 +155,14 @@ namespace ShikiNet.Core
 
             var response = await RequestAsync(httpRequestMessage);
 
-            try
-            {
-                return JsonConvert.DeserializeObject<T>(response, jsonSerializerSettings);
-            }
-            catch (JsonSerializationException ex)
-            {
-                logger.Warn(ex, $"PutAsync<{typeof(T).FullName}> | url: [{url}] | args: [{args}] | exMessage: [{ex.Message}]");
-            }
-
-            return default(T);
+            return HandleResponse<T>(response, "PutAsync", url, args);
         }
 
         internal static async Task<T> DeleteAsync<T>(string url, RequestVersion requestVersion = RequestVersion.API_V1)
         {
             var response = await RequestAsync(new HttpRequestMessage(HttpMethod.Delete, url));
 
-            try
-            {
-                return JsonConvert.DeserializeObject<T>(response, jsonSerializerSettings);
-            }
-            catch (JsonSerializationException ex)
-            {
-                logger.Warn(ex, $"DeleteAsync<{typeof(T).FullName}> | url: [{url}] | exMessage: [{ex.Message}]");
-            }
-
-            return default(T);
+            return HandleResponse<T>(response, "DeleteAsync", url);
         }
 
         public static async Task<OAuth2Token> RequestTokenAsync(string authorizationCode)
@@ -202,7 +179,6 @@ namespace ShikiNet.Core
             });
 
             OAuth2Token = await PostAsync<OAuth2Token>("/oauth/token", jObject.ToString(), RequestVersion.SITE);
-            AccessToken = OAuth2Token.AccessToken;
 
             return OAuth2Token;
         }
@@ -220,7 +196,6 @@ namespace ShikiNet.Core
             });
 
             OAuth2Token = await PostAsync<OAuth2Token>("/oauth/token", jObject.ToString(), RequestVersion.SITE);
-            AccessToken = OAuth2Token.AccessToken;
 
             return OAuth2Token;
         }
