@@ -1,0 +1,6 @@
+{
+  "client_id": "bca9a51a4dbe2c71530ffbf79cc5b91b82b6ab8d4f2205725e4535412614c890",
+  "client_secret": "a3afa6833208d30821daa36328d50d9800078c13729939a45fe318dae98e9f59",
+  "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
+  "oauth2_token": null
+}

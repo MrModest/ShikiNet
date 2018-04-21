@@ -12,7 +12,7 @@ namespace ShikiNet.Static
         public const string SITE_DOMAIN = "https://shikimori.org";
         public const string API_DOMAIN = SITE_DOMAIN + "/api";
 
-        public const string DEFAULT_APP_NAME = "ShikiNet (from api)";
-        public const string DEFAULT_DEV_NAME = "MrModest (from api)";
+        public const string DEFAULT_APP_NAME = "ShikiNet";
+        public const string DEFAULT_DEV_NAME = "MrModest";
     }
 }

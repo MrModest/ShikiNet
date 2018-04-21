@@ -69,7 +69,7 @@ namespace ShikiNet.Core
             };
         }
 
-        private static string GetFullUrl(string shortUrl, RequestVersion requestVersion = RequestVersion.API_V1)
+        private static string GetFullUrl(string shortUrl, RequestVersion requestVersion)
         {
             switch (requestVersion)
             {
@@ -84,14 +84,14 @@ namespace ShikiNet.Core
             }
         }
 
-        private static async Task<string> RequestAsync(HttpRequestMessage request)
+        private static async Task<string> RequestAsync(HttpRequestMessage request, RequestVersion requestVersion)
         {
             var shortUrl = request.RequestUri.OriginalString; //get FULL url
-            request.RequestUri = new Uri(GetFullUrl(shortUrl)); 
+            request.RequestUri = new Uri(GetFullUrl(shortUrl, requestVersion)); 
 
             logger.InfoStartRequest(request); //logging
 
-            request.Headers.Add("User-Agent", AppName + "@" + DevName);
+            request.Headers.Add("User-Agent", AppName + " %40" + DevName); //%40 - @
             if (IsAuthorized)
             {
                 if (AutoRefreshToken && IsTokenExpired)
@@ -135,7 +135,7 @@ namespace ShikiNet.Core
         internal static async Task<T> GetAsync<T>(string url, RequestVersion requestVersion = RequestVersion.API_V1)
         {
 
-            var response = await RequestAsync(new HttpRequestMessage(HttpMethod.Get, url));
+            var response = await RequestAsync(new HttpRequestMessage(HttpMethod.Get, url), requestVersion);
 
             return HandleResponse<T>(response, "GetAsync", url);
         }
@@ -149,7 +149,7 @@ namespace ShikiNet.Core
             }
             //httpRequestMessage.Headers.Add("Content-Type", "application/json"); (need?)
 
-            var response = await RequestAsync(httpRequestMessage);
+            var response = await RequestAsync(httpRequestMessage, requestVersion);
 
             return HandleResponse<T>(response, "PostAsync", url, args);
         }
@@ -163,14 +163,14 @@ namespace ShikiNet.Core
             }
             //httpRequestMessage.Headers.Add("Content-Type", "application/json"); (need?)
 
-            var response = await RequestAsync(httpRequestMessage);
+            var response = await RequestAsync(httpRequestMessage, requestVersion);
 
             return HandleResponse<T>(response, "PutAsync", url, args);
         }
 
         internal static async Task<T> DeleteAsync<T>(string url, RequestVersion requestVersion = RequestVersion.API_V1)
         {
-            var response = await RequestAsync(new HttpRequestMessage(HttpMethod.Delete, url));
+            var response = await RequestAsync(new HttpRequestMessage(HttpMethod.Delete, url), requestVersion);
 
             return HandleResponse<T>(response, "DeleteAsync", url);
         }
