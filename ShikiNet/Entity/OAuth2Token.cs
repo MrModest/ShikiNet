@@ -20,7 +20,8 @@ namespace ShikiNet.Entity
         [JsonProperty("refresh_token")]
         public string RefreshToken { get; }
 
-        [JsonProperty("created_at"), JsonConverter(typeof(SecondEpochConverter))]
-        public DateTime CreatedAt { get; }
+        [JsonProperty("created_at")]
+        [JsonConverter(typeof(SecondEpochConverter))]
+        public DateTime CreatedAt { get; private set; }
     }
 }

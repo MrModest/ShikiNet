@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using ShikiNet.Core;
 
 namespace ShikiDemoApp
@@ -31,6 +32,8 @@ namespace ShikiDemoApp
                 authData.RedirectUrl = Console.ReadLine();
             }
 
+            authData.OAuth2Token = null;
+
             if (authData.OAuth2Token == null)
             {
                 Console.WriteLine("Go to next url and copy authorization code.");
@@ -53,7 +56,7 @@ namespace ShikiDemoApp
 
                 authData.SaveToJson(filePath);
 
-                Console.WriteLine(authData.OAuth2Token.AccessToken);
+                Console.WriteLine(JsonConvert.SerializeObject(authData.OAuth2Token));
 
                 Console.ReadKey();
             }
