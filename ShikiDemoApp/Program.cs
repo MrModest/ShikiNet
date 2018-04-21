@@ -36,7 +36,7 @@ namespace ShikiDemoApp
 
             if (authData.OAuth2Token == null)
             {
-                Console.WriteLine("Go to next url and copy authorization code.");
+                //Console.WriteLine("Go to next url and copy authorization code.");
 
                 Api.ClientId = authData.ClientId;
                 Api.ClientSecret = authData.ClientSecret;
