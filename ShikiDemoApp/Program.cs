@@ -52,7 +52,9 @@ namespace ShikiDemoApp
                 Console.Write("Enter authorization code here: ");
                 var authCode = Console.ReadLine();
 
-                authData.OAuth2Token = Api.RequestTokenAsync(authCode).Result;
+                Api.RequestTokenAsync(authCode);
+
+                authData.OAuth2Token = Api.OAuth2Token;
 
                 authData.SaveToJson(filePath);
 
