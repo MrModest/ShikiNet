@@ -55,7 +55,7 @@ Api.AutoRefreshToken = true
 
 Пример запроса списка аниме, соответствующих заданному фильтру:
 ```c#
-IEnumerable<Anime> animes = Animes.GetByFilterAsync(f =>
+IEnumerable<Anime> animes = await Animes.GetByFilterAsync(f =>
 {
     f.Page = 1;
     f.Limit = 10;
