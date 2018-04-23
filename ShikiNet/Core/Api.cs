@@ -175,6 +175,11 @@ namespace ShikiNet.Core
             return HandleResponse<T>(response, "DeleteAsync", url);
         }
 
+        public static string GetAuthorizationCodeRequestUrl()
+        {
+            return $"{SITE_DOMAIN}/oauth/authorize?client_id={ClientId}&redirect_uri={RedirectUrl}&response_type=code";
+        }
+
         public static async Task<OAuth2Token> RequestTokenAsync(string authorizationCode)
         {
             if (ClientId == null || ClientSecret == null || authorizationCode == null || RedirectUrl == null) { return null; }
