@@ -53,7 +53,6 @@ namespace ShikiDemoApp
                 var authCode = Console.ReadLine();
 
                 authData.OAuth2Token = Api.RequestTokenAsync(authCode).Result;
-                Api.RefreshTokenAsync(Api.OAuth2Token.RefreshToken);
 
                 authData.SaveToJson(filePath);
 
