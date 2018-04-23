@@ -18,12 +18,12 @@ namespace ShikiNet.Core
 
         #region GetByFilter
 
-        public static async Task<IEnumerable<Anime>> GetByFilter(AnimeFilter filter)
+        public static async Task<IEnumerable<Anime>> GetByFilterAsync(AnimeFilter filter)
         {
             return await Api.GetAsync<IEnumerable<Anime>>($"/animes{filter.BuildQuery()}");
         }
 
-        public static async Task<IEnumerable<Anime>> GetByFilter(Action<AnimeFilter> filter)
+        public static async Task<IEnumerable<Anime>> GetByFilterAsync(Action<AnimeFilter> filter)
         {
             var aFilter = new AnimeFilter();
             filter(aFilter);
@@ -31,17 +31,17 @@ namespace ShikiNet.Core
             return await Api.GetAsync<IEnumerable<Anime>>($"/animes{aFilter.BuildQuery()}");
         }
 
-        public static async Task<IEnumerable<Anime>> GetByFilter(string searchString)
+        public static async Task<IEnumerable<Anime>> GetByFilterAsync(string searchString)
         {
-            return await GetByFilter(f =>
+            return await GetByFilterAsync(f =>
             {
                 f.SearchString = searchString;
             });
         }
 
-        public static async Task<IEnumerable<Anime>> GetByFilter(string searchString, Action<AnimeFilter> filter)
+        public static async Task<IEnumerable<Anime>> GetByFilterAsync(string searchString, Action<AnimeFilter> filter)
         {
-            return await GetByFilter(f =>
+            return await GetByFilterAsync(f =>
             {
                 f.SearchString = searchString;
                 filter(f);

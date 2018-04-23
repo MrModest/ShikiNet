@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ShikiNet.Core;
+using ShikiNet.Entity;
+using ShikiNet.Filter.FilterEntity;
 
 namespace ShikiDemoApp
 {
@@ -10,7 +13,7 @@ namespace ShikiDemoApp
     {
         private static string filePath = "AuthData.json";
 
-        static void Main(string[] args)
+        static async void Main(string[] args)
         {
             var authData = AuthData.FromJsonPath(filePath);
 
@@ -52,14 +55,29 @@ namespace ShikiDemoApp
                 Console.Write("Enter authorization code here: ");
                 var authCode = Console.ReadLine();
 
-                Api.RequestTokenAsync(authCode);
+                var result =  Api.RequestTokenAsync(authCode).Result;
 
-                authData.OAuth2Token = Api.OAuth2Token;
+                authData.OAuth2Token = Api.OAuth2Token; //it null (!) if not use .Result
 
                 authData.SaveToJson(filePath);
 
                 Console.WriteLine(JsonConvert.SerializeObject(authData.OAuth2Token));
 
+                IEnumerable<Anime> animes = await Animes.GetByFilterAsync(f =>
+                {
+                    f.Page = 1;
+                    f.Limit = 10;
+                    f.Seasons.Add(new SeasonYear(Season.SPRING, 2018), true); //include
+                    f.Seasons.Add(new SeasonYear(2017), false); //exclude
+                    f.Seasons.Add(new SeasonYear(1990, 2010), true); //include
+                    f.Score = 7;
+                    f.Censored = false;
+                    f.GenreIds.Include(12, 24, 56); //include several genres
+                    f.GenreIds.Exclude(1, 2, 3); //exclude several genres
+                    f.SearchString = "some anime name";
+                    f.Order = AnimeOrder.POPULARITY; //sorting by popularity
+                });
+                var animeList = new List<Anime>(animes);
                 Console.ReadKey();
             }
         }
