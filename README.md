@@ -49,3 +49,27 @@ await Api.RefreshTokenAsync(/*optional*/refreshToken);
 //Можно включить автоматическое обновление токена, по истечении срока.
 //(По умолчанию выключено.)
 Api.AutoRefreshToken = true
+```
+
+# Animes
+
+Пример запроса списка аниме, соответствующих заданному фильтру:
+```c#
+IEnumerable<Anime> animes = Animes.GetByFilter(f =>
+{
+    f.Page = 1;
+    f.Limit = 10;
+    f.Seasons.Add(new SeasonYear(Season.SPRING, 2018), true); //включающее значение фильтра
+    f.Seasons.Add(new SeasonYear(2017), false); //искючающее значение фильтра
+    f.Seasons.Add(new SeasonYear(1990, 2010), true); //включающее значение фильтра
+    f.Score = 7;
+    f.Censored = false;
+    f.GenreIds.Include(12, 24, 56); //include several genres
+    f.GenreIds.Exclude(1, 2, 3); //exclude several genres
+    f.SearchString = "some anime name";
+    f.Order = AnimeOrder.POPULARITY; //sorting by popularity
+});
+
+//Если необходимо преобразовать в List<T>
+List<Anime> animeList = new List<Anime>(animes);
+```
