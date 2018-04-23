@@ -202,8 +202,10 @@ namespace ShikiNet.Core
             return OAuth2Token;
         }
 
-        public static async Task<OAuth2Token> RefreshTokenAsync(string refreshToken)
+        public static async Task<OAuth2Token> RefreshTokenAsync(string refreshToken = null)
         {
+            refreshToken = refreshToken ?? OAuth2Token?.RefreshToken;
+
             if(ClientId == null || ClientSecret == null || refreshToken == null) { return null; }
 
             logger.InfoExecutionStart("Refreshing token"); //logging
