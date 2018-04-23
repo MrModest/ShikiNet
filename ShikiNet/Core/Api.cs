@@ -96,7 +96,7 @@ namespace ShikiNet.Core
             {
                 if (AutoRefreshToken && IsTokenExpired)
                 {
-                    await RefreshTokenAsync(OAuth2Token.AccessToken);
+                    await RefreshTokenAsync();
                 }
                 request.Headers.Add("Authorization", "Bearer " + OAuth2Token.AccessToken);
             }
