@@ -261,4 +261,4 @@ __pycache__/
 *.pyc
 
 # Auth Data
-AuthData.json
+ShikiDemoApp/AuthData.json
