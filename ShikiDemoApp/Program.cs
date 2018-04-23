@@ -45,7 +45,7 @@ namespace ShikiDemoApp
                 //Api.AppName = "test";
                 //Api.DevName = String.Empty;
 
-                var codeRequestUrl = $"{Api.SITE_DOMAIN}/oauth/authorize?client_id={Api.ClientId}&redirect_uri={Api.RedirectUrl}&response_type=code";
+                var codeRequestUrl = Api.GetAuthorizationCodeRequestUrl();
 
                 Util.OpenUrl(codeRequestUrl);
 
