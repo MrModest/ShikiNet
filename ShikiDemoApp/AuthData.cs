@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using ShikiNet.Entity;
 
 namespace ShikiDemoApp
@@ -31,7 +32,13 @@ namespace ShikiDemoApp
                 File.WriteAllText(filePath, DefaultJson);
             }
             var json = File.ReadAllText("AuthData.json");
-            return JsonConvert.DeserializeObject<AuthData>(json);
+
+            var settings = new JsonSerializerSettings //for (de-)serialization get-autoproperty
+            {
+                ContractResolver = new PrivateSetterContractResolver()
+            };
+
+            return JsonConvert.DeserializeObject<AuthData>(json, settings);
         }
 
         public void SaveToJson(string filePath)
@@ -43,6 +50,19 @@ namespace ShikiDemoApp
         public static AuthData FromJson(string json)
         {
             return JsonConvert.DeserializeObject<AuthData>(json);
+        }
+
+        public bool IsTokenExpired
+        {
+            get
+            {
+                if (OAuth2Token == null || String.IsNullOrWhiteSpace(OAuth2Token.AccessToken)) { return true; }
+
+                var expiredDate = new DateTime(OAuth2Token.CreatedAt.Ticks).AddSeconds(OAuth2Token.ExpiresIn);
+                if (expiredDate < DateTime.Now) { return true; }
+
+                return false;
+            }
         }
     }
 }

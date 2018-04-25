@@ -72,7 +72,7 @@ namespace ShikiNet.Filter
             query.Append($"page={Page}");
             query.Append($"&limit={Limit}");
             if (Score > 0) { query.Append($"&score={Score}"); }
-            query.Append($"&censored={Censored}");
+            query.Append($"&censored={Censored.ToString().ToLower()}");
 
             if (!Statuses.IsEmpty) { query.Append(Statuses); }
             if (!Seasons.IsEmpty)  { query.Append(Seasons); }
