@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using ShikiNet.Entity;
+using ShikiNet.Entities;
 using ShikiNet.Static;
-using ShikiNet.Util;
+using ShikiNet.Utils;
+using ShikiNet.Utils.Extentions;
 
 namespace ShikiNet.Core
 {

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShikiNet.Entity
+namespace ShikiNet.Entities
 {
-    public enum TitleRating
+    public class AnimeFull : Anime, ITitleFull
     {
+
     }
 }

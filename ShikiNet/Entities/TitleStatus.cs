@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShikiNet.Entity
+namespace ShikiNet.Entities
 {
     public enum TitleStatus
     {
+        Anons,
+        Ongoing,
+        Released
     }
 }

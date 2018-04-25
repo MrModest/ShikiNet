@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 
-namespace ShikiNet.Util
+namespace ShikiNet.Utils.Extentions
 {
     public static class LoggerExtensions
     {

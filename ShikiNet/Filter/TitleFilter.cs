@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
-using ShikiNet.Entity;
+using ShikiNet.Entities;
 using ShikiNet.Filter.FilterEntity;
 using ShikiNet.Static;
 

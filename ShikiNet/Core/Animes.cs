@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using ShikiNet.Entity;
+using ShikiNet.Entities;
 using ShikiNet.Filter;
 
 namespace ShikiNet.Core

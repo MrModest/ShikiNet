@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ShikiNet.Util;
+using ShikiNet.Utils.Extentions;
 
 namespace ShikiNet.Filter.FilterEntity
 {

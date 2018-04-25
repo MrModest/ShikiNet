@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
-using ShikiNet.Util;
+using ShikiNet.Utils.JsonConverters;
 
-namespace ShikiNet.Entity
+namespace ShikiNet.Entities
 {
     public class OAuth2Token
     {
@@ -21,7 +21,7 @@ namespace ShikiNet.Entity
         public string RefreshToken { get; }
 
         [JsonProperty("created_at")]
-        [JsonConverter(typeof(SecondEpochConverter))]
+        [JsonConverter(typeof(SecondEpochJsonConverter))]
         public DateTime CreatedAt { get; private set; }
     }
 }

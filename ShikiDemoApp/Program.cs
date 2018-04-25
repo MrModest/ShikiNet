@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using ShikiNet.Core;
-using ShikiNet.Entity;
+using ShikiNet.Entities;
 using ShikiNet.Filter.FilterEntity;
 
 namespace ShikiDemoApp
@@ -40,17 +40,18 @@ namespace ShikiDemoApp
         {
             return await Animes.GetByFilterAsync(f =>
             {
-                f.Page = 1;
-                f.Limit = 10;
-                f.Seasons.Add(new SeasonYear(Season.SPRING, 2018), true); //include
-                f.Seasons.Add(new SeasonYear(2017), false); //exclude
-                f.Seasons.Add(new SeasonYear(1990, 2010), true); //include
-                f.Score = 7;
-                f.Censored = false;
-                //f.GenreIds.Include(12, 24, 56); //include several genres
-                f.GenreIds.Exclude(1, 2, 3); //exclude several genres
-                //f.SearchString = "some anime name";
-                f.Order = AnimeOrder.POPULARITY; //sorting by popularity
+                //f.Page = 1;
+                //f.Limit = 10;
+                //f.Seasons.Add(new SeasonYear(Season.SPRING, 2018), true); //include
+                //f.Seasons.Add(new SeasonYear(2017), false); //exclude
+                //f.Seasons.Add(new SeasonYear(1990, 2010), true); //include
+                //f.Score = 7;
+                //f.Censored = false;
+                ////f.GenreIds.Include(12, 24, 56); //include several genres
+                //f.GenreIds.Exclude(1, 2, 3); //exclude several genres
+                ////f.SearchString = "some anime name";
+                //f.Order = AnimeOrder.POPULARITY; //sorting by popularity
+                f.Order = AnimeOrder.RANDOM;
             });
         }
 
@@ -109,7 +110,8 @@ namespace ShikiDemoApp
                 ContractResolver = new PrivateSetterContractResolver()
             };
 
-            Console.WriteLine(JsonConvert.SerializeObject(obj, settings));
+            //EnumConverter don't work if set 'JsonSerializerSettings.ContractResolver'
+            Console.WriteLine(JsonConvert.SerializeObject(obj, Formatting.Indented/*, settings*/));
         }
     }
 }

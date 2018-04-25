@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShikiNet.Entity
+namespace ShikiNet.Entities
 {
     public enum AnimeKind
     {
+        TV,
+        Movie,
+        OVA,
+        ONA,
+        Special,
+        Music
     }
 }

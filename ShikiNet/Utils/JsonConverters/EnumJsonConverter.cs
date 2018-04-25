@@ -4,21 +4,20 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace ShikiNet.Util
+namespace ShikiNet.Utils.JsonConverters
 {
-    public class SecondEpochConverter : DateTimeConverterBase
+    public class EnumJsonConverter : StringEnumConverter
     {
-        private static readonly DateTime _epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            writer.WriteRawValue(((DateTime)value - _epoch).TotalSeconds.ToString());
+            writer.WriteRawValue(((Enum)value).ToString().ToLower());
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             if (reader.Value == null) { return null; }
-            return _epoch.AddSeconds((long)reader.Value);
+            var val = reader.Value.ToString().Replace("_", String.Empty);
+            return Enum.Parse(objectType, val, true);
         }
     }
 }

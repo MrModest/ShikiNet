@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ShikiNet.Entity;
+using ShikiNet.Entities;
 using ShikiNet.Filter.FilterEntity;
-using ShikiNet.Util;
+using ShikiNet.Utils.Extentions;
 
 namespace ShikiNet.Filter
 {

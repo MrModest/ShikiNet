@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using ShikiNet.Entity;
+using ShikiNet.Entities;
 
 namespace ShikiDemoApp
 {
