@@ -68,15 +68,15 @@ List<Anime> animeList = new List<Anime>(animes);
 ```
 
 Следующие фильтры являются типами `FilterDictionary<T>`:
-* `Statuses`
-* `Seasons`
-* `Ids`
+* `Statuses` - Статус тайтла: анонсировано/онгоинг/релиз
+* `Seasons` - Год(ы) и/или сезон выхода
+* `Ids` 
 * `ExcludeIds`
-* `MyLists`
+* `MyLists` - Наличие в аниме/манга листе пользователя
 * `GenreIds`
-* `Kind`
-* `Durations`
-* `Ratings`
+* `Kind` - тип аниме/манги: ТВ/Фильм/Манга/Манхва
+* `Durations` - Продолжительность эпизода: до 10/до 30/более 30 (минут)
+* `Ratings` - Возрастной рейтинг
 * `StudioIds`
 * `PublisherIds`
 
