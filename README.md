@@ -54,10 +54,10 @@ IEnumerable<Anime> animes = await Animes.GetByFilterAsync(f =>
     f.Seasons.Add(new SeasonYear(1990, 2010), true); //включающее значение фильтра
     f.Score = 7;
     f.Censored = false;
-    f.GenreIds.Include(12, 24, 56); //include several genres
-    f.GenreIds.Exclude(1, 2, 3); //exclude several genres
+    f.GenreIds.Include(12, 24, 56); //включить несколько жанров
+    f.GenreIds.Exclude(1, 2, 3); //исключить несколько жанров
     f.SearchString = "some anime name";
-    f.Order = AnimeOrder.POPULARITY; //sorting by popularity
+    f.Order = AnimeOrder.POPULARITY; //сортировка по популярности
 });
 
 //Если необходимо преобразовать в List<T>
