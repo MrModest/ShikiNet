@@ -52,6 +52,8 @@ IEnumerable<Anime> animes = await Animes.GetByFilterAsync(f =>
     f.Seasons.Add(new SeasonYear(Season.SPRING, 2018), true); //включающее значение фильтра
     f.Seasons.Add(new SeasonYear(2017), false); //искючающее значение фильтра
     f.Seasons.Add(new SeasonYear(1990, 2010), true); //включающее значение фильтра
+    //также можно использовать несколько включающих/искючающих фильтров следующим образом
+    f.Seasons.Include(new SeasonYear(2015), new SeasonYear(2016)); //включили 2015 и 2016 года
     f.Score = 7;
     f.Censored = false;
     f.GenreIds.Include(12, 24, 56); //включить несколько жанров
