@@ -1,7 +1,7 @@
 # ShikiNet
 Shikimori API implementation for .Net Standart 2.0
 
-Не завершено и вряд ли когда-нибудь будет. 
+**Не завершено и вряд ли когда-нибудь будет.**
 
 Вдохновился кодом из [этого](https://github.com/Firely-Pasha/JShikiApi) репозитория. 
 
