@@ -74,6 +74,11 @@ List<Anime> animeList = new List<Anime>(animes);
 * `ExcludeIds`
 * `MyLists`
 * `GenreIds`
+* `Kind`
+* `Durations`
+* `Ratings`
+* `StudioIds`
+* `PublisherIds`
 
 и могут использовать слующие способы добавления значения:
 * `Add(T filter, bool include)` - включает или исключает (в зависимости от значение `include`) значение фильтра
