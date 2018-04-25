@@ -43,7 +43,7 @@ Api.AutoRefreshToken = true
 
 # Animes
 
-Пример запроса списка аниме, соответствующих заданному фильтру:
+Пример запроса списка аниме, соответствующих заданным фильтрам:
 ```c#
 IEnumerable<Anime> animes = await Animes.GetByFilterAsync(f =>
 {
@@ -52,8 +52,9 @@ IEnumerable<Anime> animes = await Animes.GetByFilterAsync(f =>
     f.Seasons.Add(new SeasonYear(Season.SPRING, 2018), true); //включающее значение фильтра
     f.Seasons.Add(new SeasonYear(2017), false); //искючающее значение фильтра
     f.Seasons.Add(new SeasonYear(1990, 2010), true); //включающее значение фильтра
-    //также можно использовать несколько включающих/искючающих фильтров следующим образом
+    //также можно использовать несколько включающих/исключающих фильтров следующим образом
     f.Seasons.Include(new SeasonYear(2015), new SeasonYear(2016)); //включили 2015 и 2016 года
+    f.Seasons.Exclude(new SeasonYear(1998), new SeasonYear(1999)); //исключили 1998 и 1999 года
     f.Score = 7;
     f.Censored = false;
     f.GenreIds.Include(12, 24, 56); //включить несколько жанров
@@ -65,3 +66,16 @@ IEnumerable<Anime> animes = await Animes.GetByFilterAsync(f =>
 //Если необходимо преобразовать в List<T>
 List<Anime> animeList = new List<Anime>(animes);
 ```
+
+Следующие фильтры являются типами `FilterDictionary<T>`:
+* `Statuses`
+* `Seasons`
+* `Ids`
+* `ExcludeIds`
+* `MyLists`
+* `GenreIds`
+
+и могут использовать слующие способы добавления значения:
+* `Add(T filter, bool include)` - включает или исключает (в зависимости от значение `include`) значение фильтра
+* `Include(params T[] filters)` - включает все значения, перечисленные в аргументах
+* `Exclude(params T[] filters)` - исключает все значения, перечисленные в аргументах
