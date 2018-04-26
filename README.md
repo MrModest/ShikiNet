@@ -1,22 +1,12 @@
 # ShikiNet
 Shikimori API implementation for .Net Standart 2.0
 
-Не завершено и вряд ли когда-нибудь будет. 
+**Не завершено и вряд ли когда-нибудь будет.**
 
 Вдохновился кодом из [этого](https://github.com/Firely-Pasha/JShikiApi) репозитория. 
 
 Стало интересно переписать Core-класс под C#. Желания же переписывать 86(!) сущностей с Java на C# нет, а парсеры справляются неочень.
 Так что это "just for fun". :)
-
-Переписаны только несколько классов.
-
-* Логика: <br />
-[**Shikimori**](https://github.com/Firely-Pasha/JShikiApi/blob/master/src/main/java/net/pagala/JShikiApi/Core/Shikimori.java) (у меня он называется [**Api**](https://github.com/MrModest/ShikiNet/blob/master/ShikiNet/Core/Api.cs)), <br />
-[**Animes**](https://github.com/Firely-Pasha/JShikiApi/blob/master/src/main/java/net/pagala/JShikiApi/Core/Animes.java) (частично)
-
-* Сущности: <br />
-(Если в списке нет класса, но он есть в папке Entity, то он, скорее всего, пустой)<br />
-[**OAuthToken**](https://github.com/Firely-Pasha/JShikiApi/blob/master/src/main/java/net/pagala/JShikiApi/Items/OAuthToken.java) (у меня она называется [**OAuth2Token**](https://github.com/MrModest/ShikiNet/blob/master/ShikiNet/Entity/OAuth2Token.cs))
 
 # Авторизация
 Перед началом использования методов под авторизованным пользователем необходимо проделать следующие действия:
@@ -53,7 +43,7 @@ Api.AutoRefreshToken = true
 
 # Animes
 
-Пример запроса списка аниме, соответствующих заданному фильтру:
+Пример запроса списка аниме, соответствующих заданным фильтрам:
 ```c#
 IEnumerable<Anime> animes = await Animes.GetByFilterAsync(f =>
 {
@@ -62,14 +52,35 @@ IEnumerable<Anime> animes = await Animes.GetByFilterAsync(f =>
     f.Seasons.Add(new SeasonYear(Season.SPRING, 2018), true); //включающее значение фильтра
     f.Seasons.Add(new SeasonYear(2017), false); //искючающее значение фильтра
     f.Seasons.Add(new SeasonYear(1990, 2010), true); //включающее значение фильтра
+    //также можно использовать несколько включающих/исключающих фильтров следующим образом
+    f.Seasons.Include(new SeasonYear(2015), new SeasonYear(2016)); //включили 2015 и 2016 года
+    f.Seasons.Exclude(new SeasonYear(1998), new SeasonYear(1999)); //исключили 1998 и 1999 года
     f.Score = 7;
     f.Censored = false;
-    f.GenreIds.Include(12, 24, 56); //include several genres
-    f.GenreIds.Exclude(1, 2, 3); //exclude several genres
+    f.GenreIds.Include(12, 24, 56); //включить несколько жанров
+    f.GenreIds.Exclude(1, 2, 3); //исключить несколько жанров
     f.SearchString = "some anime name";
-    f.Order = AnimeOrder.POPULARITY; //sorting by popularity
+    f.Order = AnimeOrder.POPULARITY; //сортировка по популярности
 });
 
 //Если необходимо преобразовать в List<T>
 List<Anime> animeList = new List<Anime>(animes);
 ```
+
+Следующие фильтры являются типами `FilterDictionary<T>`:
+* `Statuses` - статус тайтла: анонсировано/онгоинг/релиз
+* `Seasons` - год(ы) и/или сезон выхода
+* `Ids` 
+* `ExcludeIds`
+* `MyLists` - наличие в аниме/манга листе *авторизованного* пользователя
+* `GenreIds`
+* `Kind` - тип аниме/манги: ТВ/Фильм/Манга/Манхва
+* `Durations` - продолжительность эпизода: до 10/до 30/более 30 (минут)
+* `Ratings` - возрастной рейтинг
+* `StudioIds`
+* `PublisherIds`
+
+и могут использовать слующие способы добавления значения:
+* `Add(T filter, bool include)` - включает или исключает (в зависимости от значение `include`) значение фильтра
+* `Include(params T[] filters)` - включает все значения, перечисленные в аргументах
+* `Exclude(params T[] filters)` - исключает все значения, перечисленные в аргументах
