@@ -46,7 +46,7 @@ namespace ShikiNet.Filter
         public int Score { get; set; }
         public Boolean Censored { get; set; }
         public FilterDictionary<int> Ids { get; set; }
-        public FilterDictionary<int> ExcludeIds { get; set; }
+        //public FilterDictionary<int> ExcludeIds { get; set; }
         public FilterDictionary<UserRateStatus> MyLists { get; set; }
         public FilterDictionary<int> GenreIds { get; set; }
         public String SearchString { get; set; }
@@ -60,7 +60,7 @@ namespace ShikiNet.Filter
             Statuses   = new FilterDictionary<TitleStatus>("status");
             Seasons    = new FilterDictionary<SeasonYear>("season");
             Ids        = new FilterDictionary<int>("ids");
-            ExcludeIds = new FilterDictionary<int>("exclude_ids");
+            //ExcludeIds = new FilterDictionary<int>("exclude_ids");
             MyLists    = new FilterDictionary<UserRateStatus>("mylist");
             GenreIds   = new FilterDictionary<int>("genre");
         }
@@ -74,12 +74,12 @@ namespace ShikiNet.Filter
             if (Score > 0) { query.Append($"&score={Score}"); }
             query.Append($"&censored={Censored.ToString().ToLower()}");
 
-            if (!Statuses.IsEmpty) { query.Append(Statuses); }
-            if (!Seasons.IsEmpty)  { query.Append(Seasons); }
-            if (!Ids.IsEmpty)      { query.Append(Ids); }
-            if (!Ids.IsEmpty)      { query.Append(ExcludeIds); }
-            if (!MyLists.IsEmpty)  { query.Append(MyLists); }
-            if (!GenreIds.IsEmpty) { query.Append(GenreIds); }
+            if (!Statuses.IsEmpty)   { query.Append(Statuses); }
+            if (!Seasons.IsEmpty)    { query.Append(Seasons); }
+            if (!Ids.IsEmpty)        { query.Append(Ids); }
+            //if (!ExcludeIds.IsEmpty) { query.Append(ExcludeIds); }
+            if (!MyLists.IsEmpty)    { query.Append(MyLists); }
+            if (!GenreIds.IsEmpty)   { query.Append(GenreIds); }
 
             if (String.IsNullOrWhiteSpace(SearchString)) { query.Append("&search=").Append(HttpUtility.UrlEncode(SearchString, Encoding.UTF8)); }
         }

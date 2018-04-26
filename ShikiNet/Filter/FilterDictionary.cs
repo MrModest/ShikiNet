@@ -26,9 +26,36 @@ namespace ShikiNet.Filter
             }
         }
 
+
         public FilterDictionary(string filterName)
         {
             this.name = filterName;
+        }
+
+
+        private string ToStringForIds()
+        {
+            StringBuilder query = new StringBuilder();
+            if (IncludedFilters.Count() > 0)
+            {
+                query.Append($"&{name}=");
+                foreach (var id in IncludedFilters)
+                {
+                    query.Append(id.ToString()).Append(",");
+                }
+                query.Remove(query.Length - 1, 1); //delete last comma
+            }
+            if (ExcludedFilters.Count() > 0)
+            {
+                query.Append($"&exclude_{name}=");
+                foreach (var id in IncludedFilters)
+                {
+                    query.Append(id.ToString()).Append(",");
+                }
+                query.Remove(query.Length - 1, 1); //delete last comma
+            }
+
+            return query.ToString();
         }
 
         public FilterDictionary<T> Add(T filter, bool include)
@@ -60,7 +87,9 @@ namespace ShikiNet.Filter
 
         public override string ToString()
         {
-            if (filterDict.Count == 0) { return String.Empty; }
+            if (IsEmpty) { return String.Empty; }
+
+            if (name.Equals("ids")) { return ToStringForIds(); } //special answer for ids/exclude_ids
 
             StringBuilder query = new StringBuilder();
             query.Append($"&{name}=");
