@@ -31,7 +31,7 @@ namespace ShikiDemoApp
             {
                 File.WriteAllText(filePath, DefaultJson);
             }
-            var json = File.ReadAllText("AuthData.json");
+            var json = File.ReadAllText(filePath); //fixed!
 
             var settings = new JsonSerializerSettings //for (de-)serialization get-autoproperty
             {
