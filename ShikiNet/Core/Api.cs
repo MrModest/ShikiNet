@@ -34,13 +34,10 @@ namespace ShikiNet.Core
 
         public static OAuth2Token OAuth2Token { get; private set; }
         public static bool AutoRefreshToken { get; set; }
-        public static bool IsAuthorized
-        {
-            get
-            {
-                return OAuth2Token?.AccessToken != null;
-            }
-        }
+
+        public static bool IsAuthorized =>
+            OAuth2Token?.AccessToken != null;
+
         public static bool IsTokenExpired
         {
             get

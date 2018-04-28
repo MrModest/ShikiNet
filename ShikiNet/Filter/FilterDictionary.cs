@@ -10,21 +10,14 @@ namespace ShikiNet.Filter
         private string name;
         private IDictionary<T, bool> filterDict = new Dictionary<T, bool>();
 
-        public bool IsEmpty { get { return filterDict.Count == 0; } }
-        public IEnumerable<T> IncludedFilters
-        {
-            get
-            {
-                return filterDict.Where(fd => fd.Value == true).Select(fd => fd.Key);
-            }
-        }
-        public IEnumerable<T> ExcludedFilters
-        {
-            get
-            {
-                return filterDict.Where(fd => fd.Value == false).Select(fd => fd.Key);
-            }
-        }
+        public bool IsEmpty => 
+            filterDict.Count == 0;
+
+        public IEnumerable<T> IncludedFilters =>
+            filterDict.Where(fd => fd.Value == true).Select(fd => fd.Key);
+
+        public IEnumerable<T> ExcludedFilters =>
+            filterDict.Where(fd => fd.Value == false).Select(fd => fd.Key);
 
 
         public FilterDictionary(string filterName)
