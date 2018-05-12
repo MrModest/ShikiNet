@@ -94,7 +94,7 @@ namespace ShikiNet.Core
             {
                 if (AutoRefreshToken && IsTokenExpired)
                 {
-                    await RefreshTokenAsync();
+                    await RefreshTokenAsync().ConfigureAwait(false);
                 }
                 request.Headers.Add("Authorization", "Bearer " + OAuth2Token.AccessToken);
             }
@@ -102,13 +102,13 @@ namespace ShikiNet.Core
             HttpResponseMessage response;
             using(client = new HttpClient())
             {
-                response = await client.SendAsync(request);
+                response = await client.SendAsync(request).ConfigureAwait(false);
             }
 
             if (response.IsSuccessStatusCode)
             {
                 logger.InfoDoneRequest(request); //logging
-                return await response.Content.ReadAsStringAsync();
+                return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             }
 
             logger.WarnNotOkResponse(request, response); //logging
@@ -133,7 +133,7 @@ namespace ShikiNet.Core
         internal static async Task<T> GetAsync<T>(string url, RequestVersion requestVersion = RequestVersion.API_V1)
         {
 
-            var response = await RequestAsync(new HttpRequestMessage(HttpMethod.Get, url), requestVersion);
+            var response = await RequestAsync(new HttpRequestMessage(HttpMethod.Get, url), requestVersion).ConfigureAwait(false);
 
             return HandleResponse<T>(response, "GetAsync", url);
         }
@@ -147,7 +147,7 @@ namespace ShikiNet.Core
             }
             //httpRequestMessage.Headers.Add("Content-Type", "application/json"); (need?)
 
-            var response = await RequestAsync(httpRequestMessage, requestVersion);
+            var response = await RequestAsync(httpRequestMessage, requestVersion).ConfigureAwait(false);
 
             return HandleResponse<T>(response, "PostAsync", url, args);
         }
@@ -161,14 +161,14 @@ namespace ShikiNet.Core
             }
             //httpRequestMessage.Headers.Add("Content-Type", "application/json"); (need?)
 
-            var response = await RequestAsync(httpRequestMessage, requestVersion);
+            var response = await RequestAsync(httpRequestMessage, requestVersion).ConfigureAwait(false);
 
             return HandleResponse<T>(response, "PutAsync", url, args);
         }
 
         internal static async Task<T> DeleteAsync<T>(string url, RequestVersion requestVersion = RequestVersion.API_V1)
         {
-            var response = await RequestAsync(new HttpRequestMessage(HttpMethod.Delete, url), requestVersion);
+            var response = await RequestAsync(new HttpRequestMessage(HttpMethod.Delete, url), requestVersion).ConfigureAwait(false);
 
             return HandleResponse<T>(response, "DeleteAsync", url);
         }
@@ -193,7 +193,7 @@ namespace ShikiNet.Core
                 redirect_uri  = RedirectUrl //need?
             });
 
-            OAuth2Token = await PostAsync<OAuth2Token>("/oauth/token", jObject.ToString(), RequestVersion.SITE);
+            OAuth2Token = await PostAsync<OAuth2Token>("/oauth/token", jObject.ToString(), RequestVersion.SITE).ConfigureAwait(false);
 
             logger.InfoOrWarnExecutionStatus("Requesting token", IsAuthorized); //logging
 
@@ -216,7 +216,7 @@ namespace ShikiNet.Core
                 refresh_token = refreshToken
             });
 
-            OAuth2Token = await PostAsync<OAuth2Token>("/oauth/token", jObject.ToString(), RequestVersion.SITE);
+            OAuth2Token = await PostAsync<OAuth2Token>("/oauth/token", jObject.ToString(), RequestVersion.SITE).ConfigureAwait(false);
 
             logger.InfoOrWarnExecutionStatus("Refreshing token", !IsTokenExpired); //logging
 

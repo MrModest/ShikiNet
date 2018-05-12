@@ -13,14 +13,14 @@ namespace ShikiNet.Core
 
         public static async Task<AnimeFull> GetById(int id)
         {
-            return await Api.GetAsync<AnimeFull>($"/animes/{id}");
+            return await Api.GetAsync<AnimeFull>($"/animes/{id}").ConfigureAwait(false);
         }
 
         #region GetByFilter
 
         public static async Task<IEnumerable<Anime>> GetByFilterAsync(AnimeFilter filter)
         {
-            return await Api.GetAsync<IEnumerable<Anime>>($"/animes{filter.BuildQuery()}");
+            return await Api.GetAsync<IEnumerable<Anime>>($"/animes{filter.BuildQuery()}").ConfigureAwait(false);
         }
 
         public static async Task<IEnumerable<Anime>> GetByFilterAsync(Action<AnimeFilter> filter)
@@ -28,7 +28,7 @@ namespace ShikiNet.Core
             var aFilter = new AnimeFilter();
             filter(aFilter);
             logger.Info($"GetByFilter(Action<AnimeFilter>) | genered_url: [{aFilter.BuildQuery()}]");
-            return await Api.GetAsync<IEnumerable<Anime>>($"/animes{aFilter.BuildQuery()}");
+            return await Api.GetAsync<IEnumerable<Anime>>($"/animes{aFilter.BuildQuery()}").ConfigureAwait(false);
         }
 
         public static async Task<IEnumerable<Anime>> GetByFilterAsync(string searchString)
@@ -36,7 +36,7 @@ namespace ShikiNet.Core
             return await GetByFilterAsync(f =>
             {
                 f.SearchString = searchString;
-            });
+            }).ConfigureAwait(false);
         }
 
         public static async Task<IEnumerable<Anime>> GetByFilterAsync(string searchString, Action<AnimeFilter> filter)
@@ -45,7 +45,7 @@ namespace ShikiNet.Core
             {
                 f.SearchString = searchString;
                 filter(f);
-            });
+            }).ConfigureAwait(false);
         }
 
         #endregion
