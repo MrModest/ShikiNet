@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using ShikiNet.Utils.Extensions;
 
 namespace ShikiNet.Utils.JsonConverters
 {
@@ -10,7 +11,7 @@ namespace ShikiNet.Utils.JsonConverters
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            writer.WriteRawValue(((Enum)value).ToString().ToLower());
+            writer.WriteRawValue(((Enum)value).ToString().ToUnderscoreCase());
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
