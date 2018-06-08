@@ -88,6 +88,7 @@ namespace ShikiNet.Filter
             query.Append($"&{name}=");
             foreach (var filter in filterDict)
             {
+                //ToDo: convert key from PascalCase to under_score only for enum
                 query.Append(filter.Value ? "" : "!").Append(filter.Key.ToString().ToLower()).Append(",");
             }
             query.Remove(query.Length - 1, 1); //delete last comma

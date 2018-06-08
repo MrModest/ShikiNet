@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using ShikiNet.Entities;
+using ShikiNet.Entities.Enums;
 using ShikiNet.Filter.FilterEntity;
 using ShikiNet.Static;
 

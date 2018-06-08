@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace ShikiNet.Utils.Extensions
@@ -7,6 +8,10 @@ namespace ShikiNet.Utils.Extensions
         //https://gist.github.com/vkobel/d7302c0076c64c95ef4b
         public static string ToUnderscoreCase(this string str) {
             return string.Concat(str.Select((x, i) => (i > 0 && char.IsUpper(x)) ? "_" + x.ToString() : x.ToString())).ToLower();
+        }
+
+        public static string ToUnderscoreCase(this Enum @enum) {
+            return @enum.ToString().ToUnderscoreCase();
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+using ShikiNet.Entities.Enums;
 using ShikiNet.Utils.JsonConverters;
 
 namespace ShikiNet.Entities

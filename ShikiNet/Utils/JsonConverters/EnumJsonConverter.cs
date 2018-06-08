@@ -11,7 +11,7 @@ namespace ShikiNet.Utils.JsonConverters
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            writer.WriteRawValue(((Enum)value).ToString().ToUnderscoreCase());
+            writer.WriteRawValue(((Enum)value).ToString().ToLower()/*.ToUnderscoreCase()*/);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)

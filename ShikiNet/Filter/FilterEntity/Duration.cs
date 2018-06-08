@@ -4,6 +4,7 @@ using System.Text;
 
 namespace ShikiNet.Filter.FilterEntity
 {
+    //ToDo: refactor to PascalCase
     public enum Duration
     {
         S,

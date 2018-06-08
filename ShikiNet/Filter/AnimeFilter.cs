@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ShikiNet.Entities;
+using ShikiNet.Entities.Enums;
 using ShikiNet.Filter.FilterEntity;
 using ShikiNet.Utils.Extensions;
 
@@ -29,7 +30,7 @@ namespace ShikiNet.Filter
         {
             BuildRootQuery();
 
-            query.Append($"&order={Order.ToLowerString()}");
+            query.Append($"&order={Order.ToLowerString()}"); //ToDo: convert from PascalCase to under_score
 
             if (!Kind.IsEmpty)      { query.Append(Kind); }
             if (!Durations.IsEmpty) { query.Append(Durations); }
