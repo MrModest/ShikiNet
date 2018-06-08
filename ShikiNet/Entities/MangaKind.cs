@@ -7,7 +7,7 @@ namespace ShikiNet.Entities
     public enum MangaKind
     {
         Manga,
-        ManhwA,
+        Manhwa,
         Manhua,
         Novel,
         OneShot,
