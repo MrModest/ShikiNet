@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace ShikiNet.Utils.Extentions
+namespace ShikiNet.Utils.Extensions
 {
     public static class LoggerExtensions
     {

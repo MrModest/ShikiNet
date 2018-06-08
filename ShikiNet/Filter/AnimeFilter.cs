@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ShikiNet.Entities;
 using ShikiNet.Filter.FilterEntity;
-using ShikiNet.Utils.Extentions;
+using ShikiNet.Utils.Extensions;
 
 namespace ShikiNet.Filter
 {

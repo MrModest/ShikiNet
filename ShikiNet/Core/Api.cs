@@ -11,7 +11,7 @@ using Newtonsoft.Json.Serialization;
 using ShikiNet.Entities;
 using ShikiNet.Static;
 using ShikiNet.Utils;
-using ShikiNet.Utils.Extentions;
+using ShikiNet.Utils.Extensions;
 
 namespace ShikiNet.Core
 {

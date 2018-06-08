@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShikiNet.Utils.Extentions
+namespace ShikiNet.Utils.Extensions
 {
     public static class EnumExtensions
     {
